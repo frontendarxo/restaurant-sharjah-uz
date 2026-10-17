@@ -138,7 +138,8 @@
   $("#add-dish").addEventListener("click", function(){ openEditor(null); });
 
   /* ---------- editor ---------- */
-  var dlg = $("#editor"), cur = null, edLang = "ru", draft = null, pendingFile = null;
+  var dlg = $("#editor"), cur = null, edLang = "ru", draft = null, pendingFile = null, lockY = 0;
+  dlg.addEventListener("close", function(){ var b = document.body.style; b.position = b.top = b.left = b.right = b.width = ""; document.documentElement.style.overflow = ""; window.scrollTo(0, lockY); });
   function openEditor(id){
     cur = id ? state.dishes.filter(function(x){ return x.id === id; })[0] : null;
     draft = cur ? JSON.parse(JSON.stringify(cur)) : { id: null, category_id: state.filter !== "all" ? state.filter : (state.cats[0] && state.cats[0].id), price: "", image_url: null,
@@ -152,6 +153,7 @@
     $("#ed-available").checked = !!draft.available; $("#ed-visible").checked = !!draft.visible;
     $("#ed-delete").hidden = !cur; $("#ed-confirm").hidden = true; $("#ed-err").hidden = true;
     edLang = null; setLang("ru"); drawThumb();
+    if (!dlg.open){ lockY = window.scrollY; document.documentElement.style.overflow = "hidden"; var b = document.body.style; b.position = "fixed"; b.top = -lockY + "px"; b.left = b.right = "0"; b.width = "100%"; }
     dlg.showModal ? dlg.showModal() : dlg.setAttribute("open", "");
   }
   function nextSort(){ return state.dishes.reduce(function(m, d){ return Math.max(m, d.sort || 0); }, 0) + 10; }

@@ -459,6 +459,7 @@
     fillStatic();
     ["street","flat","landmark","makani","name","phone"].forEach(function(k){ if (state[k] && !val(k)) $("#co-" + k).value = state[k]; });
     setMode(state.mode || "delivery"); syncEmirate(); renderItems();
+    if (!dlg.open && SM.lock) SM.lock();
     if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
     showMapIfDelivery();
   }
@@ -467,6 +468,7 @@
     if (e.target.closest("[data-co-close]")) dlg.close();
   });
   dlg.addEventListener("click", function(e){ if (e.target === dlg) dlg.close(); });
+  dlg.addEventListener("close", function(){ if (SM.unlock) SM.unlock(); });
 
   SM.onMenu = function(){ pruneCart(); syncBars(); };
   SM.onLang = function(){ fillStatic(); syncBars(); syncEmirate(); if (SM.current && $("#sheet").open) syncAdd(); };
