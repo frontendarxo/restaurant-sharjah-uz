@@ -208,8 +208,8 @@ html[lang="ar"] .dish-comp{font-family:var(--font-arabic); line-height:22px}
 .empty{padding:var(--space-12) 0; text-align:center; color:var(--ink-muted)}
 
 /* dish sheet */
-dialog.sheet{border:0; padding:0; margin:auto auto 0; width:min(560px,100%); max-height:92vh; border-radius:var(--radius-lg) var(--radius-lg) 0 0; background:var(--paper-raised); color:var(--ink); box-shadow:var(--shadow-sheet)}
-@media (min-width:720px){ dialog.sheet{margin:auto; border-radius:var(--radius-lg)} }
+dialog.sheet{position:fixed; inset:0; border:0; padding:0; margin:auto auto 0; width:min(560px,100%); max-width:100%; max-height:calc(100vh - 32px); max-height:calc(var(--vvh, 100dvh) - max(16px, env(safe-area-inset-top,0px))); border-radius:var(--radius-lg) var(--radius-lg) 0 0; background:var(--paper-raised); color:var(--ink); box-shadow:var(--shadow-sheet)}
+@media (min-width:720px){ dialog.sheet{margin:auto; border-radius:var(--radius-lg); max-height:calc(var(--vvh, 100dvh) - 48px)} }
 dialog.sheet::backdrop{background:rgba(15,34,48,.55)}
 .sheet-photo{position:relative; aspect-ratio:16/11; background:var(--sand); display:grid; place-items:center; border-radius:inherit; border-end-start-radius:0; border-end-end-radius:0; overflow:hidden}
 .sheet-photo img{width:80%; max-height:92%; object-fit:contain}
@@ -294,7 +294,7 @@ html[lang="ar"] .toast{font-family:var(--font-arabic)}
 dialog.checkout{width:min(640px,100%)}
 dialog.sheet{overflow:auto; overscroll-behavior:contain}
 .co{display:flex; flex-direction:column; gap:var(--space-4); padding:var(--space-6) var(--space-6) 0}
-.co-head{display:flex; align-items:center; justify-content:space-between}
+.co-head{display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:6; margin:calc(-1 * var(--space-6)) calc(-1 * var(--space-6)) 0; padding:var(--space-4) var(--space-6) var(--space-3); background:var(--paper-raised)}
 .co-head h3{font-size:32px; color:var(--indigo)}
 html[lang="ar"] .co-head h3{font-size:24px}
 .co-close{position:static}
@@ -354,7 +354,7 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
 .map-pin path{fill:var(--pomegranate)}
 .map-pin circle{fill:var(--on-pomegranate)}
 @media (max-width:860px){ .cart-fab{display:none} }
-@media (max-width:560px){ .f2{grid-template-columns:1fr} .co{padding:var(--space-4) var(--space-4) 0} .co-foot{margin-inline:calc(-1 * var(--space-4)); padding-inline:var(--space-4)} }
+@media (max-width:560px){ .f2{grid-template-columns:1fr} .co{padding:var(--space-4) var(--space-4) 0} .co-head{margin:calc(-1 * var(--space-4)) calc(-1 * var(--space-4)) 0; padding:var(--space-3) var(--space-4)} .co-foot{margin-inline:calc(-1 * var(--space-4)); padding-inline:var(--space-4)} }
 
 @media (max-width:1080px){
   .cats{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -799,6 +799,15 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
     }, {rootMargin: "-170px 0px -60% 0px"});
     $$(".mcat").forEach(function(s){ io.observe(s); });
   }
+
+  /* Real visible height (iOS Safari toolbars, keyboard): dialogs size to it instead of 100vh. */
+  (function(){
+    var vv = window.visualViewport;
+    function setVh(){ document.documentElement.style.setProperty("--vvh", (vv ? vv.height : window.innerHeight) + "px"); }
+    setVh();
+    (vv || window).addEventListener("resize", setVh);
+    window.addEventListener("orientationchange", setVh);
+  })();
 
   var sheet = $("#sheet");
   /* Freeze the page behind open dialogs (iOS-safe: fix the body and restore the scroll position). */
