@@ -89,6 +89,14 @@ drop policy if exists "see own admin row" on public.admins;
 create policy "see own admin row" on public.admins for select to authenticated
   using (user_id = auth.uid() or public.admin_role() = 'owner');
 
+-- API roles must be able to reach the tables (RLS above still decides which rows).
+-- Explicit because newer Supabase projects may not auto-grant new tables to the API.
+grant usage on schema public to anon, authenticated;
+grant select on public.categories, public.dishes to anon, authenticated;
+grant insert, update, delete on public.categories, public.dishes to authenticated;
+grant select on public.admins to authenticated;
+grant execute on function public.admin_role() to anon, authenticated;
+
 -- Photo storage: public read, owner upload
 insert into storage.buckets (id, name, public) values ('dishes', 'dishes', true)
   on conflict (id) do update set public = true;
