@@ -24,7 +24,7 @@
    Сотрудник добавляется так же, с ролью `'staff'`.
 4. **Netlify → Site configuration → Environment variables → Add a variable**:
    - `SUPABASE_URL` — Supabase → Project Settings → API → Project URL
-   - `SUPABASE_ANON_KEY` — там же, ключ *anon / publishable* (не service_role!)
+   - `SUPABASE_ANON_KEY` — там же, ключ **Publishable** (`sb_publishable_…`). Secret key (`sb_secret_…`) и service_role никуда не вставлять
    - `GOOGLE_MAPS_KEY` — браузерный ключ Google, ограниченный доменом сайта
 5. **Netlify → Deploys → Trigger deploy → Deploy site**, чтобы переменные подхватились.
 6. Открыть `https://<домен>/admin`, войти почтой владельца.

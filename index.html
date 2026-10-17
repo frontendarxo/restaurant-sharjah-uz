@@ -849,7 +849,7 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
     var cfg = window.SM_CONFIG || {};
     if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.fetch) return;
     var base = cfg.supabaseUrl.replace(/\/$/, "") + "/rest/v1/";
-    var h = { apikey: cfg.supabaseAnonKey, Authorization: "Bearer " + cfg.supabaseAnonKey };
+    var h = { apikey: cfg.supabaseAnonKey };  /* publishable keys go on the apikey header only */
     function get(path){ return fetch(base + path, { headers: h }).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }); }
     Promise.all([
       get("categories?select=id,name_ru,name_en,name_ar,sort&visible=eq.true&order=sort.asc"),
