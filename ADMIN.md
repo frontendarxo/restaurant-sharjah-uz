@@ -1,6 +1,6 @@
 # Админка меню «Самарканд»
 
-Сайт — статичные файлы на Vercel. Меню, стоп-лист и фото хранятся в Supabase.
+Сайт — статичные файлы на Netlify. Меню, стоп-лист и фото хранятся в Supabase.
 Админка открывается по адресу `/admin`. Сайт читает меню из Supabase при каждой загрузке;
 если Supabase недоступен, показывает встроенное меню из `assets/menu.js`.
 
@@ -22,19 +22,19 @@
    select id, 'owner' from auth.users where email = 'owner@example.com';
    ```
    Сотрудник добавляется так же, с ролью `'staff'`.
-4. **Vercel → Project → Settings → Environment Variables** (Production и Preview):
+4. **Netlify → Site configuration → Environment variables → Add a variable**:
    - `SUPABASE_URL` — Supabase → Project Settings → API → Project URL
    - `SUPABASE_ANON_KEY` — там же, ключ *anon / publishable* (не service_role!)
    - `GOOGLE_MAPS_KEY` — браузерный ключ Google, ограниченный доменом сайта
-5. **Vercel → Deployments → Redeploy**, чтобы переменные подхватились.
+5. **Netlify → Deploys → Trigger deploy → Deploy site**, чтобы переменные подхватились.
 6. Открыть `https://<домен>/admin`, войти почтой владельца.
 
 ## Как это устроено
 
 | Файл | Что делает |
 | --- | --- |
-| `api/config.js` | Функция Vercel. Отдаёт `/assets/config.js` с адресом Supabase и ключами из переменных окружения |
-| `vercel.json` | Перенаправляет `/assets/config.js` на функцию, закрывает `/admin` от поисковиков |
+| `netlify/functions/config.js` | Функция Netlify. Отдаёт `/assets/config.js` с адресом Supabase и ключами из переменных окружения |
+| `netlify.toml` | Публикует корень репозитория без сборки, направляет `/assets/config.js` на функцию, закрывает `/admin` от поисковиков |
 | `index.html` | Сайт. Загружает меню из Supabase (`categories`, `dishes`), скрывает блюда с `visible = false`, помечает `available = false` как «Сегодня нет» |
 | `admin/` | Админка. Работает напрямую с Supabase через supabase-js |
 | `supabase/schema.sql` | Таблицы, права доступа (RLS), хранилище фото `dishes` |

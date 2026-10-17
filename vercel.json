@@ -1,9 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/assets/config.js", "destination": "/api/config" },
-    { "source": "/admin", "destination": "/admin/index.html" }
-  ],
-  "headers": [
-    { "source": "/admin/(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Cache-Control", "value": "no-store" } ] }
-  ]
-}
