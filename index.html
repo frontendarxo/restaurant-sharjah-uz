@@ -75,12 +75,17 @@ html[lang="ar"] .btn{font-family:var(--font-arabic)}
 .btn-primary{background:var(--indigo); color:var(--on-indigo)}
 .btn-ghost{background:transparent; color:var(--indigo); border-color:var(--hairline)}
 .btn-sm{min-height:38px; padding:0 var(--space-4); font-size:13px}
+.btn:disabled{opacity:.5; cursor:not-allowed; transform:none; box-shadow:none}
+.stepper button:disabled{opacity:.35; cursor:not-allowed}
 .badge{display:inline-flex; align-items:center; gap:4px; height:24px; padding:0 10px; border-radius:var(--radius-pill); font:600 11px/1 var(--font-sans); white-space:nowrap}
 html[lang="ar"] .badge{font-family:var(--font-arabic)}
 .badge .ico{width:13px; height:13px; stroke-width:2}
 .b-fried{background:var(--pomegranate); color:var(--on-pomegranate)}
 .b-hit{background:var(--saffron); color:var(--on-saffron)}
 .b-soft{background:var(--paper-raised); color:var(--ink)}
+.b-off{background:var(--ink); color:var(--paper)}
+.dish.off .dish-photo img, .dish.off .ph{opacity:.4; filter:grayscale(1)}
+.dish.off .price{color:var(--ink-muted); text-decoration:line-through}
 
 /* header */
 header.top{position:sticky; top:0; z-index:30; background:color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid transparent; transition:border-color .2s}
@@ -342,6 +347,12 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
 .locate .ico{width:18px; height:18px}
 .co-foot{display:flex; flex-direction:column; gap:var(--space-3); position:sticky; bottom:0; margin:0 calc(-1 * var(--space-6)); padding:var(--space-4) var(--space-6) calc(var(--space-4) + env(safe-area-inset-bottom,0px)); background:var(--paper-raised); border-top:1px solid var(--hairline)}
 .co-foot .btn{width:100%; min-height:54px}
+.mapbox{position:relative; display:flex; flex-direction:column; gap:8px}
+.map{height:220px; border-radius:var(--radius-md); overflow:hidden; background:var(--sand); box-shadow:inset 0 0 0 1px var(--hairline)}
+.map-pin{position:absolute; left:50%; top:110px; width:30px; height:40px; transform:translate(-50%,-100%); pointer-events:none; filter:drop-shadow(0 4px 4px rgba(15,34,48,.35))}
+.map-pin svg{width:100%; height:100%}
+.map-pin path{fill:var(--pomegranate)}
+.map-pin circle{fill:var(--on-pomegranate)}
 @media (max-width:860px){ .cart-fab{display:none} }
 @media (max-width:560px){ .f2{grid-template-columns:1fr} .co{padding:var(--space-4) var(--space-4) 0} .co-foot{margin-inline:calc(-1 * var(--space-4)); padding-inline:var(--space-4)} }
 
@@ -567,7 +578,7 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
 
 <script src="assets/menu.js"></script>
 <script src="assets/areas.js"></script>
-<script src="assets/config.js" onerror="void 0"></script>
+<script src="assets/config.js"></script>
 <script>
 (function(){
   var WA = "971585923773";
@@ -584,7 +595,7 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
       hits_kicker:"What guests order most", hits_h:"Start with these", hits_p:"The dishes our guests mention in reviews again and again.",
       menu_kicker:"Full menu", menu_h:"Menu", menu_p:"Tap a dish to see what is inside and order it on WhatsApp. Prices in AED.",
       search:"Find a dish: plov, manti, samsa…", dishes:"dishes", nothing:"Nothing found. Try another name.",
-      pcs8:"8 pcs", pcs3:"3 pcs", fried:"Fried", hit:"Guest favourite", tandoor:"Tandoor",
+      pcs8:"8 pcs", pcs3:"3 pcs", fried:"Fried", hit:"Guest favourite", soldout:"Sold out today", tandoor:"Tandoor",
       svc_kicker:"Beyond lunch", svc_h:"Celebrate, order in, break the fast",
       svc1_h:"Weddings & banquets", svc1_p:"Weddings, birthdays and family dinners in Eastern style. We plan the table, the plov and the service.", svc1_b:"Plan an event",
       svc2_h:"Delivery", svc2_p:"Hot plov, manti and samsa delivered across Sharjah. Write to us on WhatsApp and we will confirm time and price.", svc2_b:"Order delivery",
@@ -612,7 +623,7 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
       hits_kicker:"Чаще всего заказывают", hits_h:"Начните с этого", hits_p:"Блюда, которые гости снова и снова хвалят в отзывах.",
       menu_kicker:"Полное меню", menu_h:"Меню", menu_p:"Нажмите на блюдо, чтобы увидеть состав и заказать в WhatsApp. Цены в дирхамах.",
       search:"Найти блюдо: плов, манты, самса…", dishes:"блюд", nothing:"Ничего не нашлось. Попробуйте другое название.",
-      pcs8:"8 шт.", pcs3:"3 шт.", fried:"Жареное", hit:"Хит", tandoor:"Тандыр",
+      pcs8:"8 шт.", pcs3:"3 шт.", fried:"Жареное", hit:"Хит", soldout:"Сегодня нет", tandoor:"Тандыр",
       svc_kicker:"Не только обед", svc_h:"Праздник, доставка, ифтар",
       svc1_h:"Свадьбы и банкеты", svc1_p:"Свадьбы, дни рождения и семейные праздники в восточном стиле. Продумаем стол, плов и обслуживание.", svc1_b:"Обсудить праздник",
       svc2_h:"Доставка", svc2_p:"Горячий плов, манты и самса с доставкой по Шардже. Напишите в WhatsApp — подтвердим время и стоимость.", svc2_b:"Заказать доставку",
@@ -640,7 +651,7 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
       hits_kicker:"الأكثر طلباً", hits_h:"ابدأ بهذه الأطباق", hits_p:"الأطباق التي يذكرها ضيوفنا في تقييماتهم مرة بعد مرة.",
       menu_kicker:"القائمة الكاملة", menu_h:"القائمة", menu_p:"اضغط على الطبق لترى مكوناته واطلبه عبر واتساب. الأسعار بالدرهم.",
       search:"ابحث عن طبق: بلوف، مانتي، سمسة…", dishes:"أطباق", nothing:"لم نجد شيئاً. جرّب اسماً آخر.",
-      pcs8:"٨ قطع", pcs3:"٣ قطع", fried:"مقلي", hit:"المفضّل", tandoor:"تنور",
+      pcs8:"٨ قطع", pcs3:"٣ قطع", fried:"مقلي", hit:"المفضّل", soldout:"غير متوفر اليوم", tandoor:"تنور",
       svc_kicker:"أكثر من وجبة", svc_h:"احتفل، اطلب إلى البيت، أفطر معنا",
       svc1_h:"الأعراس والولائم", svc1_p:"أعراس وأعياد ميلاد وعزائم عائلية بطابع شرقي. نجهّز المائدة والبلوف والخدمة.", svc1_b:"خطّط لمناسبتك",
       svc2_h:"التوصيل", svc2_p:"بلوف ومانتي وسمسة ساخنة إلى بيتك في الشارقة. راسلنا على واتساب لنؤكد الوقت والسعر.", svc2_b:"اطلب التوصيل",
@@ -657,10 +668,28 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
       wa_hello:"مرحباً! أود أن أطلب من مطعم سمرقند:", wa_event:"مرحباً! أود تنظيم مناسبة في مطعم سمرقند.", wa_iftar:"مرحباً! أود حجز إفطار في مطعم سمرقند."
     }
   };
-  var HITS = ["plov","samsa","manti","lagman-fried","shashlik"];
+  var HITS_DEFAULT = ["plov","samsa","manti","lagman-fried","shashlik"];
   var CAT_IMG = {hot:"plov", soups:"shurpa", grill:"shashlik", bakery:"samsa", salads:"achik-chuchuk"};
   var lang = "en", view = "grid", query = "";
-  var byId = {}; MENU.forEach(function(d){ byId[d[0]] = d; });
+  var byId = {};
+  function indexMenu(){ Object.keys(byId).forEach(function(k){ delete byId[k]; }); MENU.forEach(function(d){ byId[d[0]] = d; }); }
+  indexMenu();
+  /* image: a slug from the original menu ("plov"), a site path ("/assets/…") or a full URL (Supabase Storage) */
+  function imgSrc(x){ if (!x) return ""; return (/^(https?:)?\/\//.test(x) || x.charAt(0) === "/") ? x : 'assets/dishes/' + x + '.webp'; }
+  function isOff(d){ return d[7] === false; }
+  function hitIds(){
+    var tagged = MENU.filter(function(d){ return d[6].indexOf("hit") > -1 && d[3] && !isOff(d); }).map(function(d){ return d[0]; });
+    function rank(id){ var i = HITS_DEFAULT.indexOf(id); return i < 0 ? 99 : i; }
+    tagged.sort(function(a, b){ return rank(a) - rank(b); });
+    if (tagged.length >= 3) return tagged.slice(0, 5);
+    return HITS_DEFAULT.filter(function(id){ return byId[id] && byId[id][3]; });
+  }
+  function catImg(id){
+    var pref = CAT_IMG[id];
+    if (pref && byId[pref] && byId[pref][3]) return byId[pref][3];
+    var d = MENU.filter(function(x){ return x[1] === id && x[3]; })[0];
+    return d ? d[3] : null;
+  }
   var $ = function(s, r){ return (r||document).querySelector(s); };
   var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
@@ -675,7 +704,8 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
     return '<span class="ph" aria-hidden="true"><svg viewBox="0 0 100 100"><path d="M18 92V50a32 32 0 0 1 64 0v42" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M30 92V54a20 20 0 0 1 40 0v38" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".5"/><text x="50" y="80" text-anchor="middle" font-size="30">' + esc(ch) + '</text></svg></span>';
   }
   var ICON_FLAME = '<svg class="ico" viewBox="0 0 24 24"><path d="M12 21c-3.9 0-6.5-2.6-6.5-6 0-3.2 2.4-5 3.5-8 1.6 1.4 2.3 3 2.3 4.4 1-.6 1.9-2 2-3.6 2.4 1.8 3.2 4.4 3.2 7.2 0 3.4-2.6 6-4.5 6Z"/></svg>';
-  function badges(tags){
+  function badges(tags, off){
+    if (off) return '<span class="badge b-off">' + esc(t("soldout")) + '</span>';
     var out = "";
     tags.forEach(function(tg){
       if (tg === "fried") out += '<span class="badge b-fried">' + ICON_FLAME + esc(t("fried")) + '</span>';
@@ -708,18 +738,18 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
   }
 
   function renderHits(){
-    $(".js-hits").innerHTML = HITS.map(function(id){
+    $(".js-hits").innerHTML = hitIds().map(function(id){
       var d = byId[id];
       return '<button class="hit" type="button" data-dish="' + id + '"><span class="hit-photo">' + (d[6].indexOf("fried")>-1 ? '<span class="badge b-fried">' + ICON_FLAME + esc(t("fried")) + '</span>' : '') +
-        '<img src="assets/dishes/' + d[3] + '.webp" alt="" loading="lazy"></span><span class="hit-name">' + esc(d[4][lang]) + '</span><span class="hit-meta"><span class="dish-sub">' + esc(altName(d)) + '</span><span class="price">' + priceText(d[2]) + '</span></span></button>';
+        '<img src="' + imgSrc(d[3]) + '" alt="" loading="lazy"></span><span class="hit-name">' + esc(d[4][lang]) + '</span><span class="hit-meta"><span class="dish-sub">' + esc(altName(d)) + '</span><span class="price">' + priceText(d[2]) + '</span></span></button>';
     }).join("");
   }
   function renderCats(){
     $(".js-cats").innerHTML = MENU_CATS.map(function(c){
       var n = MENU.filter(function(d){ return d[1] === c.id; }).length;
-      var img = CAT_IMG[c.id];
+      var img = catImg(c.id);
       return '<button type="button" class="cat' + (img ? '' : ' alt') + '" data-goto="' + c.id + '">' +
-        (img ? '<img src="assets/dishes/' + img + '.webp" alt="" loading="lazy">' : '<i class="mask ornament"></i>') +
+        (img ? '<img src="' + imgSrc(img) + '" alt="" loading="lazy">' : '<i class="mask ornament"></i>') +
         '<span class="cat-name">' + esc(c[lang]) + '</span><span class="cat-count">' + num(n) + ' ' + esc(t("dishes")) + '</span></button>';
     }).join("");
     $(".js-tabs").innerHTML = MENU_CATS.map(function(c, i){
@@ -739,8 +769,8 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
       total += items.length;
       html += '<div class="mcat" id="cat-' + c.id + '" data-cat="' + c.id + '"><h3>' + esc(c[lang]) + ' <small>' + num(items.length) + '</small></h3><div class="grid">' +
         items.map(function(d){
-          var photo = d[3] ? '<img src="assets/dishes/' + d[3] + '.webp" alt="" loading="lazy">' : placeholder(d[4][lang]);
-          return '<button type="button" class="dish" data-dish="' + d[0] + '"><span class="dish-photo"><span class="badges">' + badges(d[6]) + '</span>' + photo + '</span>' +
+          var photo = d[3] ? '<img src="' + imgSrc(d[3]) + '" alt="" loading="lazy">' : placeholder(d[4][lang]);
+          return '<button type="button" class="dish' + (isOff(d) ? ' off' : '') + '" data-dish="' + d[0] + '"><span class="dish-photo"><span class="badges">' + badges(d[6], isOff(d)) + '</span>' + photo + '</span>' +
             '<span class="dish-body"><span class="dish-name">' + esc(d[4][lang]) + '</span><span class="dish-sub">' + esc(altName(d)) + '</span>' +
             (d[5] ? '<span class="dish-comp">' + esc(d[5][lang]) + '</span>' : '') + '</span><span class="price">' + priceText(d[2]) + '</span></button>';
         }).join("") + '</div></div>';
@@ -775,8 +805,8 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
     var d = byId[id]; if (!d) return;
     var ph = $(".js-sheet-photo");
     $$("img,.ph", ph).forEach(function(n){ n.remove(); });
-    ph.insertAdjacentHTML("beforeend", d[3] ? '<img src="assets/dishes/' + d[3] + '.webp" alt="">' : placeholder(d[4][lang]));
-    $(".js-sheet-badges").innerHTML = badges(d[6]);
+    ph.insertAdjacentHTML("beforeend", d[3] ? '<img src="' + imgSrc(d[3]) + '" alt="">' : placeholder(d[4][lang]));
+    $(".js-sheet-badges").innerHTML = badges(d[6], isOff(d));
     $(".js-sheet-h").textContent = d[4][lang];
     $(".js-sheet-alt").textContent = lang === "ar" ? d[4].en : (lang === "en" ? d[4].ru + " · " + d[4].ar : d[4].en + " · " + d[4].ar);
     $(".js-sheet-comp").textContent = d[5] ? d[5][lang] : "";
@@ -812,7 +842,31 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
     if (window.SM.onLang) window.SM.onLang();
   }
   window.SM = { t: t, lang: function(){ return lang; }, byId: byId, priceText: priceText, num: num, esc: esc, wa: wa, WA: WA, placeholder: placeholder, T: T,
-    img: function(n){ return 'assets/dishes/' + n + '.webp'; }, close: function(){ sheet.close(); } };
+    img: imgSrc, isOff: isOff, close: function(){ sheet.close(); } };
+
+  /* Live menu from Supabase (admin panel). The bundled menu.js stays as the fallback. */
+  function loadLiveMenu(){
+    var cfg = window.SM_CONFIG || {};
+    if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.fetch) return;
+    var base = cfg.supabaseUrl.replace(/\/$/, "") + "/rest/v1/";
+    var h = { apikey: cfg.supabaseAnonKey, Authorization: "Bearer " + cfg.supabaseAnonKey };
+    function get(path){ return fetch(base + path, { headers: h }).then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); }); }
+    Promise.all([
+      get("categories?select=id,name_ru,name_en,name_ar,sort&visible=eq.true&order=sort.asc"),
+      get("dishes?select=id,category_id,price,image_url,name_ru,name_en,name_ar,comp_ru,comp_en,comp_ar,tags,available,sort&visible=eq.true&order=sort.asc")
+    ]).then(function(res){
+      var cats = res[0], dishes = res[1];
+      if (!cats.length || !dishes.length) return;
+      window.MENU_CATS = cats.map(function(c){ return { id: c.id, ru: c.name_ru, en: c.name_en, ar: c.name_ar }; });
+      window.MENU = dishes.map(function(d){
+        var comp = (d.comp_ru || d.comp_en || d.comp_ar) ? { ru: d.comp_ru || d.comp_en || "", en: d.comp_en || d.comp_ru || "", ar: d.comp_ar || d.comp_en || "" } : null;
+        return [d.id, d.category_id, Number(d.price), d.image_url || null, { ru: d.name_ru, en: d.name_en, ar: d.name_ar }, comp, d.tags || [], d.available !== false];
+      });
+      indexMenu();
+      setLang(lang);
+      if (window.SM.onMenu) window.SM.onMenu();
+    }).catch(function(){ /* keep the bundled menu */ });
+  }
   var start = "en";
   var hash = (location.hash || "").replace("#", "");
   if (T[hash]) start = hash;
@@ -820,6 +874,7 @@ html[lang="ar"] .locate{font-family:var(--font-arabic)}
     try { var s = localStorage.getItem("sm-lang"); if (T[s]) start = s; } catch(_) {}
   }
   setLang(start);
+  loadLiveMenu();
   setInterval(updateOpen, 60000);
 })();
 </script>

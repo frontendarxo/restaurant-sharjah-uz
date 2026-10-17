@@ -1,6 +1,9 @@
 /* Samarkand Madina — cart, checkout with UAE-only address, order sent to the restaurant's WhatsApp.
-   Optional: set GOOGLE_MAPS_KEY to a Maps JavaScript API key (Places enabled) to add Google address
-   suggestions restricted to the UAE. Without a key the built-in list of UAE areas is used. */
+   Google Maps (optional): the browser key comes from window.SM_CONFIG (assets/config.js, served by /api/config on Vercel). The key's project needs
+   Maps JavaScript API, Places API (New) and Geocoding API enabled, and the key should be
+   restricted to the site's domains (HTTP referrers). With a key the checkout gets Google address
+   suggestions limited to the UAE, exact coordinates, a map with a pin and reverse geocoding.
+   Without a key, or if Google fails to load, the built-in list of UAE areas is used. */
 (function(){
   var GOOGLE_MAPS_KEY = (window.SM_CONFIG && window.SM_CONFIG.googleMapsKey) || "";
   var SM = window.SM;
@@ -15,7 +18,7 @@
       addr_h: "Delivery address in the UAE", emirate: "Emirate", area: "Area", area_ph: "Start typing: Al Nahda, Qasimia, Al Majaz…",
       area_help: "Choose your area from the list. We deliver only within the UAE.",
       locate: "Use my location", locating: "Finding you…", located: "Location added", geo_out: "This location is outside the UAE. Please choose an area in the UAE.",
-      geo_err: "Could not get your location. Choose your area from the list.",
+      geo_err: "Could not get your location. Choose your area from the list.", pin_help: "Move the map so the pin points at your building.", pin_set: "Pin set. The courier gets this exact point.",
       near: "Nearest area", street: "Street and building", street_ph: "e.g. Al Arouba St, Al Majaz Tower", flat: "Flat / villa", flat_ph: "e.g. Flat 1204",
       landmark: "Landmark or directions", landmark_ph: "Optional: next to Lulu, entrance from the back", makani: "Makani number", makani_ph: "Optional, 10 digits",
       contact_h: "Contact", name: "Your name", phone: "UAE mobile number", phone_help: "Format 05X XXX XXXX. The restaurant confirms the order by WhatsApp.",
@@ -35,7 +38,7 @@
       addr_h: "Адрес доставки в ОАЭ", emirate: "Эмират", area: "Район", area_ph: "Начните вводить: Al Nahda, Касимия, Аль-Маджаз…",
       area_help: "Выберите район из списка. Доставляем только по ОАЭ.",
       locate: "Определить моё место", locating: "Определяем…", located: "Геолокация добавлена", geo_out: "Это место за пределами ОАЭ. Выберите район в ОАЭ.",
-      geo_err: "Не удалось определить местоположение. Выберите район из списка.",
+      geo_err: "Не удалось определить местоположение. Выберите район из списка.", pin_help: "Подвиньте карту, чтобы булавка указывала на ваше здание.", pin_set: "Точка отмечена. Курьер получит именно её.",
       near: "Ближайший район", street: "Улица и здание", street_ph: "Например: Al Arouba St, Al Majaz Tower", flat: "Квартира / вилла", flat_ph: "Например: кв. 1204",
       landmark: "Ориентир", landmark_ph: "Необязательно: рядом с Lulu, вход со двора", makani: "Номер Makani", makani_ph: "Необязательно, 10 цифр",
       contact_h: "Контакты", name: "Ваше имя", phone: "Мобильный номер ОАЭ", phone_help: "Формат 05X XXX XXXX. Ресторан подтвердит заказ в WhatsApp.",
@@ -55,7 +58,7 @@
       addr_h: "عنوان التوصيل في الإمارات", emirate: "الإمارة", area: "المنطقة", area_ph: "ابدأ الكتابة: النهدة، القاسمية، المجاز…",
       area_help: "اختر منطقتك من القائمة. نوصّل داخل دولة الإمارات فقط.",
       locate: "استخدم موقعي", locating: "جارٍ تحديد موقعك…", located: "تمت إضافة الموقع", geo_out: "هذا الموقع خارج دولة الإمارات. اختر منطقة داخل الإمارات.",
-      geo_err: "تعذّر تحديد موقعك. اختر منطقتك من القائمة.",
+      geo_err: "تعذّر تحديد موقعك. اختر منطقتك من القائمة.", pin_help: "حرّك الخريطة حتى يشير الدبوس إلى مبناك.", pin_set: "تم تحديد النقطة. سيصل المندوب إليها بالضبط.",
       near: "أقرب منطقة", street: "الشارع والمبنى", street_ph: "مثال: شارع العروبة، برج المجاز", flat: "الشقة / الفيلا", flat_ph: "مثال: شقة ١٢٠٤",
       landmark: "معلم قريب", landmark_ph: "اختياري: بجانب لولو، المدخل الخلفي", makani: "رقم مكاني", makani_ph: "اختياري، ١٠ أرقام",
       contact_h: "التواصل", name: "الاسم", phone: "رقم الجوال الإماراتي", phone_help: "بصيغة 05X XXX XXXX. يؤكد المطعم الطلب عبر واتساب.",
@@ -78,7 +81,8 @@
 
   /* ---------- cart ---------- */
   var cart = load(STORE_CART, {});
-  Object.keys(cart).forEach(function(id){ if (!SM.byId[id] || !(cart[id] > 0)) delete cart[id]; });
+  function pruneCart(){ Object.keys(cart).forEach(function(id){ var d = SM.byId[id]; if (!d || !(cart[id] > 0) || (SM.isOff && SM.isOff(d))) delete cart[id]; }); save(STORE_CART, cart); }
+  pruneCart();
   function count(){ return Object.keys(cart).reduce(function(a, id){ return a + cart[id]; }, 0); }
   function total(){ return Object.keys(cart).reduce(function(a, id){ return a + cart[id] * SM.byId[id][2]; }, 0); }
   function setQty(id, q){ if (q <= 0) delete cart[id]; else cart[id] = Math.min(q, 50); save(STORE_CART, cart); syncBars(); }
@@ -99,12 +103,18 @@
 
   /* dish sheet: quantity stepper + add */
   var q = 1;
-  function syncAdd(){ var d = SM.byId[SM.current]; if (!d) return; $(".js-q").textContent = SM.num(q); $(".js-add-text").textContent = l("add") + " · " + SM.priceText(d[2] * q); }
+  function syncAdd(){
+    var d = SM.byId[SM.current]; if (!d) return;
+    var off = SM.isOff && SM.isOff(d);
+    $(".js-add").disabled = off; $(".js-q-minus").disabled = off; $(".js-q-plus").disabled = off;
+    $(".js-q").textContent = SM.num(q);
+    $(".js-add-text").textContent = off ? SM.t("soldout") : l("add") + " · " + SM.priceText(d[2] * q);
+  }
   SM.onDishOpen = function(){ q = 1; syncAdd(); };
   $(".js-q-minus").addEventListener("click", function(){ q = Math.max(1, q - 1); syncAdd(); });
   $(".js-q-plus").addEventListener("click", function(){ q = Math.min(20, q + 1); syncAdd(); });
   $(".js-add").addEventListener("click", function(){
-    var id = SM.current; setQty(id, (cart[id] || 0) + q); SM.close(); toast(l("added") + ": " + SM.byId[id][4][SM.lang()] + " × " + SM.num(q));
+    var id = SM.current; if (SM.isOff && SM.isOff(SM.byId[id])) return; setQty(id, (cart[id] || 0) + q); SM.close(); toast(l("added") + ": " + SM.byId[id][4][SM.lang()] + " × " + SM.num(q));
   });
 
   /* toast */
@@ -132,6 +142,7 @@
           '<p id="co-area-help" class="help js-l" data-l="area_help"></p>' +
           '<button type="button" class="locate js-locate"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/><circle cx="12" cy="12" r="7"/></svg><span class="js-locate-text"></span></button>' +
           '<p class="co-err js-err-area" hidden></p><p class="co-warn js-zone" hidden></p></div>' +
+        '<div class="mapbox js-mapbox" hidden><div id="co-map" class="map"></div><span class="map-pin" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 31s10-11.2 10-19A10 10 0 0 0 2 12c0 7.8 10 19 10 19Z"/><circle cx="12" cy="12" r="4"/></svg></span><p class="help js-pin-text"></p></div>' +
         '<div class="f"><label for="co-street" class="js-l" data-l="street"></label><input id="co-street" name="street" type="text" autocomplete="address-line1"><p class="co-err js-err-street" hidden></p></div>' +
         '<div class="f2"><div class="f"><label for="co-flat" class="js-l" data-l="flat"></label><input id="co-flat" name="flat" type="text" autocomplete="address-line2"><p class="co-err js-err-flat" hidden></p></div>' +
         '<div class="f js-makani-f" hidden><label for="co-makani" class="js-l" data-l="makani"></label><input id="co-makani" name="makani" type="text" inputmode="numeric" maxlength="12"><p class="co-err js-err-makani" hidden></p></div></div>' +
@@ -190,6 +201,7 @@
   function setMode(m){
     $$('input[name="mode"]', dlg).forEach(function(r){ r.checked = r.value === m; });
     $(".js-delivery").hidden = m !== "delivery"; $(".js-pickup").hidden = m !== "pickup";
+    if (m === "delivery" && typeof showMapIfDelivery === "function") showMapIfDelivery();
   }
   $$('input[name="mode"]', dlg).forEach(function(r){ r.addEventListener("change", function(){ setMode(r.value); }); });
 
@@ -228,7 +240,7 @@
     drawList();
   }
   function drawList(extra){
-    var all = opts.concat(extra || []);
+    var all = (extra || []).concat(opts);
     active = -1;
     if (!all.length){
       list.innerHTML = '<li class="combo-none" role="option" aria-disabled="true">' + esc(l("no_match")) + '</li>';
@@ -244,8 +256,9 @@
   function closeList(){ list.hidden = true; areaInput.setAttribute("aria-expanded", "false"); areaInput.removeAttribute("aria-activedescendant"); }
   function pick(k){
     var o = list._all && list._all[k]; if (!o) return;
-    if (o.g){ googleChoice = o.g; chosen = null; areaInput.value = o.g.main + ", " + o.g.sub; }
-    else { chosen = o.i; googleChoice = null; areaInput.value = areaName(o.i); emirSel.value = UAE_AREAS[o.i][0]; syncEmirate(); }
+    if (o.g){ chosen = null; areaInput.value = o.g.main + ", " + o.g.sub; googlePick(o.g); }
+    else { chosen = o.i; googleChoice = null; areaInput.value = areaName(o.i); emirSel.value = UAE_AREAS[o.i][0]; syncEmirate();
+      mapTo({ lat: UAE_AREAS[o.i][4], lng: UAE_AREAS[o.i][5] }, 15); }
     closeList(); showErr("area", "");
   }
   areaInput.addEventListener("input", function(){ chosen = null; googleChoice = null; suggest(); });
@@ -263,18 +276,106 @@
   });
   list.addEventListener("mousedown", function(e){ var li = e.target.closest("li[role=option]:not([aria-disabled])"); if (li){ e.preventDefault(); pick($$("li[role=option]", list).indexOf(li)); } });
 
-  /* optional Google Places, restricted to the UAE */
-  var gSvc = null, gLoading = false;
-  function googleSuggest(text){
-    if (!gSvc){
-      if (!gLoading){ gLoading = true; var s = document.createElement("script"); s.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(GOOGLE_MAPS_KEY) + "&libraries=places&callback=__smPlaces"; s.async = true;
-        window.__smPlaces = function(){ gSvc = new google.maps.places.AutocompleteService(); }; document.head.appendChild(s); }
-      return;
-    }
-    gSvc.getPlacePredictions({ input: text, componentRestrictions: { country: "ae" }, language: SM.lang() }, function(res){
-      if (!res || areaInput !== document.activeElement) return;
-      drawList(res.slice(0, 4).map(function(p){ return { g: { main: p.structured_formatting.main_text, sub: p.structured_formatting.secondary_text || "UAE", id: p.place_id } }; }));
+  /* ---------- Google Maps: Places (New) suggestions, details, map pin, reverse geocoding — UAE only ---------- */
+  var G = { ready: false, failed: false, p: null, map: null, token: null, user: false, seq: 0 };
+  function loadGoogle(){
+    if (!GOOGLE_MAPS_KEY || G.failed) return Promise.reject(new Error("no-google"));
+    if (G.p) return G.p;
+    G.p = new Promise(function(res, rej){
+      window.__smMaps = function(){ res(); };
+      window.gm_authFailure = function(){ G.failed = true; G.ready = false; var b = $(".js-mapbox"); if (b) b.hidden = true; };
+      var s = document.createElement("script");
+      s.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(GOOGLE_MAPS_KEY) + "&v=weekly&loading=async&language=" + SM.lang() + "&region=AE&callback=__smMaps";
+      s.async = true; s.onerror = function(){ rej(new Error("load")); };
+      document.head.appendChild(s);
+      setTimeout(function(){ rej(new Error("timeout")); }, 15000);
+    }).then(function(){
+      return Promise.all([google.maps.importLibrary("places"), google.maps.importLibrary("maps"), google.maps.importLibrary("geocoding")]);
+    }).then(function(libs){
+      G.places = libs[0]; G.maps = libs[1]; G.geocoder = new libs[2].Geocoder(); G.ready = true;
     });
+    G.p.catch(function(){ G.failed = true; });
+    return G.p;
+  }
+  function googleSuggest(text){
+    var seq = ++G.seq;
+    loadGoogle().then(function(){
+      if (!G.token) G.token = new G.places.AutocompleteSessionToken();
+      return G.places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+        input: text, includedRegionCodes: ["ae"], language: SM.lang(), region: "ae", sessionToken: G.token,
+        locationBias: { center: { lat: 25.3168, lng: 55.3805 }, radius: 50000 }
+      });
+    }).then(function(r){
+      if (!r || seq !== G.seq || areaInput !== document.activeElement) return;
+      var ex = (r.suggestions || []).filter(function(x){ return x.placePrediction; }).slice(0, 5).map(function(x){
+        var p = x.placePrediction;
+        return { g: { main: p.mainText ? p.mainText.text : p.text.text, sub: p.secondaryText ? p.secondaryText.text : "UAE", pred: p } };
+      });
+      drawList(ex);
+    }).catch(function(){});
+  }
+  function compText(c){ return c.longText || c.long_name || ""; }
+  function compOf(list, type){ var c = (list || []).filter(function(x){ return (x.types || []).indexOf(type) > -1; })[0]; return c ? compText(c) : ""; }
+  function nearestArea(la, ln){
+    var best = 0, bd = 1e9;
+    UAE_AREAS.forEach(function(a, i){ var d = Math.pow(a[4] - la, 2) + Math.pow((a[5] - ln) * Math.cos(la * Math.PI / 180), 2); if (d < bd){ bd = d; best = i; } });
+    return best;
+  }
+  function emirateFrom(comps, la, ln){
+    var a1 = norm(compOf(comps, "administrative_area_level_1") + " " + compOf(comps, "locality"));
+    var hit = UAE_EMIRATES.filter(function(e){ return [e.en, e.ar, e.ru].some(function(n){ return a1.indexOf(norm(n)) > -1; }); })[0];
+    return hit ? hit.id : UAE_AREAS[nearestArea(la, ln)][0];
+  }
+  function streetFrom(comps){
+    return [compOf(comps, "premise"), compOf(comps, "street_number"), compOf(comps, "route")].filter(Boolean).join(", ");
+  }
+  function setPoint(la, ln, comps, formatted){
+    if (!inUAE(la, ln)){ showErr("area", l("geo_out")); return false; }
+    geo = { lat: +la.toFixed(6), lng: +ln.toFixed(6) };
+    if (comps){ emirSel.value = emirateFrom(comps, la, ln); syncEmirate();
+      var st = streetFrom(comps); if (st && !val("street")) $("#co-street").value = st; }
+    if (formatted && googleChoice) googleChoice.addr = formatted;
+    showErr("area", "");
+    return true;
+  }
+  function googlePick(g){
+    googleChoice = { main: g.main, sub: g.sub };
+    var place = g.pred.toPlace();
+    place.fetchFields({ fields: ["location", "formattedAddress", "addressComponents"] }).then(function(){
+      G.token = null;
+      var loc = place.location;
+      if (!setPoint(loc.lat(), loc.lng(), place.addressComponents, place.formattedAddress)){ googleChoice = null; return; }
+      initMap(); mapTo(geo, 17); pinText(l("pin_set"));
+    }).catch(function(){ G.token = null; });
+  }
+  function pinText(t){ var el = $(".js-pin-text"); if (el) el.textContent = t; }
+  function initMap(){
+    if (!G.ready || G.map) return;
+    var box = $(".js-mapbox"); box.hidden = false;
+    var c = geo || (chosen !== null ? { lat: UAE_AREAS[chosen][4], lng: UAE_AREAS[chosen][5] } : { lat: 25.3168, lng: 55.3805 });
+    G.map = new G.maps.Map($("#co-map"), {
+      center: c, zoom: geo ? 17 : (chosen !== null ? 15 : 13), disableDefaultUI: true, zoomControl: true, gestureHandling: "greedy", clickableIcons: false,
+      restriction: { latLngBounds: { north: UAE_BOUNDS.n, south: UAE_BOUNDS.s, west: UAE_BOUNDS.w, east: UAE_BOUNDS.e }, strictBounds: false }
+    });
+    pinText(geo ? l("pin_set") : l("pin_help"));
+    G.map.addListener("dragstart", function(){ G.user = true; });
+    G.map.addListener("idle", function(){
+      if (!G.user) return;
+      G.user = false;
+      var p = G.map.getCenter(), la = p.lat(), ln = p.lng();
+      if (!setPoint(la, ln)) return;
+      pinText(l("pin_set"));
+      G.geocoder.geocode({ location: { lat: la, lng: ln } }).then(function(res){
+        var r = res && res.results && res.results[0]; if (!r) return;
+        emirSel.value = emirateFrom(r.address_components, la, ln); syncEmirate();
+        if (!googleChoice && chosen === null){ chosen = nearestArea(la, ln); areaInput.value = areaName(chosen); }
+      }).catch(function(){});
+    });
+  }
+  function mapTo(p, z){ if (!G.map) return; G.user = false; G.map.panTo(p); if (z) G.map.setZoom(z); }
+  function showMapIfDelivery(){
+    if (!GOOGLE_MAPS_KEY) return;
+    loadGoogle().then(function(){ if ($('input[name="mode"]:checked', dlg).value === "delivery") initMap(); }).catch(function(){});
   }
 
   /* geolocation, accepted only inside the UAE */
@@ -287,11 +388,17 @@
       var la = pos.coords.latitude, ln = pos.coords.longitude;
       if (!inUAE(la, ln)){ geo = null; btnText.textContent = l("locate"); showErr("area", l("geo_out")); return; }
       geo = { lat: +la.toFixed(6), lng: +ln.toFixed(6) };
-      var best = 0, bd = 1e9;
-      UAE_AREAS.forEach(function(a, i){ var d = Math.pow(a[4] - la, 2) + Math.pow((a[5] - ln) * Math.cos(la * Math.PI / 180), 2); if (d < bd){ bd = d; best = i; } });
+      var best = nearestArea(la, ln);
       if (chosen === null && !googleChoice){ chosen = best; areaInput.value = areaName(best); emirSel.value = UAE_AREAS[best][0]; syncEmirate(); }
       btnText.textContent = l("located") + " · " + l("near") + ": " + areaName(best);
       showErr("area", "");
+      if (G.ready){
+        initMap(); mapTo(geo, 17); pinText(l("pin_set"));
+        G.geocoder.geocode({ location: { lat: la, lng: ln } }).then(function(res){
+          var r = res && res.results && res.results[0]; if (!r) return;
+          setPoint(la, ln, r.address_components, r.formatted_address);
+        }).catch(function(){});
+      }
     }, function(){ btnText.textContent = l("locate"); showErr("area", l("geo_err")); }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
   });
 
@@ -331,6 +438,7 @@
       lines.push(l("msg_delivery") + ": " + parts.join(", "));
       if (emirSel.value === "DXB" && val("makani")) lines.push("Makani: " + val("makani").replace(/\s/g, ""));
       if (val("landmark")) lines.push(l("msg_land") + ": " + val("landmark"));
+      if (googleChoice && googleChoice.addr) lines.push("Google: " + googleChoice.addr);
       if (geo) lines.push(l("msg_loc") + ": https://maps.google.com/?q=" + geo.lat + "," + geo.lng);
     } else lines.push(l("msg_pickup"));
     lines.push(l("msg_name") + ": " + val("name"), l("msg_phone") + ": " + normPhone(val("phone")));
@@ -341,7 +449,7 @@
     if (!validate()){ e.preventDefault(); return; }
     var a = e.currentTarget;
     a.href = "https://wa.me/" + SM.WA + "?text=" + encodeURIComponent(message());
-    save(STORE_ADDR, { emirate: emirSel.value, areaIdx: chosen, google: googleChoice, street: val("street"), flat: val("flat"), landmark: val("landmark"), makani: val("makani"),
+    save(STORE_ADDR, { emirate: emirSel.value, areaIdx: chosen, google: googleChoice && { main: googleChoice.main, sub: googleChoice.sub, addr: googleChoice.addr }, street: val("street"), flat: val("flat"), landmark: val("landmark"), makani: val("makani"),
       name: val("name"), phone: val("phone"), lat: geo && geo.lat, lng: geo && geo.lng, mode: $('input[name="mode"]:checked', dlg).value });
   });
   form.addEventListener("submit", function(e){ e.preventDefault(); });
@@ -352,6 +460,7 @@
     ["street","flat","landmark","makani","name","phone"].forEach(function(k){ if (state[k] && !val(k)) $("#co-" + k).value = state[k]; });
     setMode(state.mode || "delivery"); syncEmirate(); renderItems();
     if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+    showMapIfDelivery();
   }
   document.addEventListener("click", function(e){
     if (e.target.closest(".js-cart-open")){ e.preventDefault(); openCheckout(); return; }
@@ -359,6 +468,7 @@
   });
   dlg.addEventListener("click", function(e){ if (e.target === dlg) dlg.close(); });
 
+  SM.onMenu = function(){ pruneCart(); syncBars(); };
   SM.onLang = function(){ fillStatic(); syncBars(); syncEmirate(); if (SM.current && $("#sheet").open) syncAdd(); };
   fillStatic(); syncEmirate(); syncBars();
 })();
