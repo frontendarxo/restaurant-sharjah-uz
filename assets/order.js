@@ -15,17 +15,17 @@
       add: "Add to order", added: "Added to your order", cart: "Your order", empty: "Your order is empty. Add dishes from the menu.",
       items1: "item", items: "items", subtotal: "Subtotal", checkout: "Checkout", back_menu: "Back to menu",
       delivery: "Delivery", pickup: "Pickup", pickup_note: "Pick up at Bu Khamseen 03, Al Majaz 2, Sharjah. We will message you when it is ready.",
-      addr_h: "Delivery address in the UAE", emirate: "Emirate", area: "Area", area_ph: "Start typing: Al Nahda, Qasimia, Al Majaz…",
-      area_help: "Choose your area from the list. We deliver only within the UAE.",
+      addr_h: "Delivery address in the UAE", emirate: "Emirate", area: "Address", area_ph: "Building, street or area, e.g. Al Majaz Tower",
+      area_help: "Start typing and pick your address from the list. We deliver only within the UAE.", emirate_is: "Emirate",
       locate: "Use my location", locating: "Finding you…", located: "Location added", geo_out: "This location is outside the UAE. Please choose an area in the UAE.",
       geo_err: "Could not get your location. Choose your area from the list.", pin_help: "Move the map so the pin points at your building.", pin_set: "Pin set. The courier gets this exact point.",
-      near: "Nearest area", street: "Street and building", street_ph: "e.g. Al Arouba St, Al Majaz Tower", flat: "Flat / villa", flat_ph: "e.g. Flat 1204",
+      near: "Nearest area", street: "Street and building", street_ph: "e.g. Al Arouba St, Al Majaz Tower", flat: "Flat, floor or villa", flat_ph: "e.g. Flat 1204, 12th floor",
       landmark: "Landmark or directions", landmark_ph: "Optional: next to Lulu, entrance from the back", makani: "Makani number", makani_ph: "Optional, 10 digits",
       contact_h: "Contact", name: "Your name", phone: "UAE mobile number", phone_help: "Format 05X XXX XXXX. The restaurant confirms the order by WhatsApp.",
       notes: "Comment for the kitchen", notes_ph: "Optional: less spicy, no onion…",
       send: "Send order on WhatsApp", fee: "Delivery fee and time are confirmed by the restaurant in WhatsApp.",
       outside_zone: "We usually deliver in Sharjah, Dubai and Ajman. For this emirate the restaurant will confirm if delivery is possible.",
-      e_area: "Choose your area from the list, or use your location.", e_street: "Add the street and building.", e_flat: "Add the flat or villa number.",
+      e_area: "Pick your address from the list or use your location.", e_street: "Add the street and building.", e_flat: "Add the flat or villa number.",
       e_name: "Add your name.", e_phone: "Enter a UAE mobile number, for example 050 123 4567.", e_makani: "Makani number has 10 digits.", e_cart: "Add at least one dish.",
       no_match: "No area found. Check the spelling or pick the emirate first.",
       msg_title: "New order — Samarkand restaurant", msg_total: "Total", msg_delivery: "Delivery to", msg_pickup: "Pickup at the restaurant",
@@ -35,17 +35,17 @@
       add: "В заказ", added: "Добавлено в заказ", cart: "Ваш заказ", empty: "В заказе пока пусто. Добавьте блюда из меню.",
       items1: "блюдо", items: "блюд", subtotal: "Сумма", checkout: "Оформить", back_menu: "К меню",
       delivery: "Доставка", pickup: "Самовывоз", pickup_note: "Заберите заказ по адресу Bu Khamseen 03, Al Majaz 2, Шарджа. Напишем, когда будет готово.",
-      addr_h: "Адрес доставки в ОАЭ", emirate: "Эмират", area: "Район", area_ph: "Начните вводить: Al Nahda, Касимия, Аль-Маджаз…",
-      area_help: "Выберите район из списка. Доставляем только по ОАЭ.",
+      addr_h: "Адрес доставки в ОАЭ", emirate: "Эмират", area: "Адрес", area_ph: "Здание, улица или район, например Al Majaz Tower",
+      area_help: "Начните вводить и выберите адрес из списка. Доставляем только по ОАЭ.", emirate_is: "Эмират",
       locate: "Определить моё место", locating: "Определяем…", located: "Геолокация добавлена", geo_out: "Это место за пределами ОАЭ. Выберите район в ОАЭ.",
       geo_err: "Не удалось определить местоположение. Выберите район из списка.", pin_help: "Подвиньте карту, чтобы булавка указывала на ваше здание.", pin_set: "Точка отмечена. Курьер получит именно её.",
-      near: "Ближайший район", street: "Улица и здание", street_ph: "Например: Al Arouba St, Al Majaz Tower", flat: "Квартира / вилла", flat_ph: "Например: кв. 1204",
+      near: "Ближайший район", street: "Улица и здание", street_ph: "Например: Al Arouba St, Al Majaz Tower", flat: "Квартира, этаж или вилла", flat_ph: "Например: кв. 1204, 12 этаж",
       landmark: "Ориентир", landmark_ph: "Необязательно: рядом с Lulu, вход со двора", makani: "Номер Makani", makani_ph: "Необязательно, 10 цифр",
       contact_h: "Контакты", name: "Ваше имя", phone: "Мобильный номер ОАЭ", phone_help: "Формат 05X XXX XXXX. Ресторан подтвердит заказ в WhatsApp.",
       notes: "Комментарий для кухни", notes_ph: "Необязательно: менее остро, без лука…",
       send: "Отправить заказ в WhatsApp", fee: "Стоимость и время доставки ресторан подтвердит в WhatsApp.",
       outside_zone: "Обычно мы доставляем по Шардже, Дубаю и Аджману. Для этого эмирата ресторан подтвердит, возможна ли доставка.",
-      e_area: "Выберите район из списка или определите местоположение.", e_street: "Укажите улицу и здание.", e_flat: "Укажите номер квартиры или виллы.",
+      e_area: "Выберите адрес из списка или определите местоположение.", e_street: "Укажите улицу и здание.", e_flat: "Укажите номер квартиры или виллы.",
       e_name: "Укажите имя.", e_phone: "Введите мобильный номер ОАЭ, например 050 123 4567.", e_makani: "В номере Makani 10 цифр.", e_cart: "Добавьте хотя бы одно блюдо.",
       no_match: "Район не найден. Проверьте написание или сначала выберите эмират.",
       msg_title: "Новый заказ — ресторан «Самарканд»", msg_total: "Итого", msg_delivery: "Доставка", msg_pickup: "Самовывоз из ресторана",
@@ -55,17 +55,17 @@
       add: "أضف إلى الطلب", added: "أُضيف إلى طلبك", cart: "طلبك", empty: "طلبك فارغ. أضف أطباقاً من القائمة.",
       items1: "طبق", items: "أطباق", subtotal: "المجموع", checkout: "إتمام الطلب", back_menu: "العودة إلى القائمة",
       delivery: "توصيل", pickup: "استلام", pickup_note: "استلم طلبك من بو خمسين ٠٣، المجاز ٢، الشارقة. سنراسلك عندما يجهز.",
-      addr_h: "عنوان التوصيل في الإمارات", emirate: "الإمارة", area: "المنطقة", area_ph: "ابدأ الكتابة: النهدة، القاسمية، المجاز…",
-      area_help: "اختر منطقتك من القائمة. نوصّل داخل دولة الإمارات فقط.",
+      addr_h: "عنوان التوصيل في الإمارات", emirate: "الإمارة", area: "العنوان", area_ph: "المبنى أو الشارع أو المنطقة، مثل برج المجاز",
+      area_help: "ابدأ الكتابة واختر عنوانك من القائمة. نوصّل داخل دولة الإمارات فقط.", emirate_is: "الإمارة",
       locate: "استخدم موقعي", locating: "جارٍ تحديد موقعك…", located: "تمت إضافة الموقع", geo_out: "هذا الموقع خارج دولة الإمارات. اختر منطقة داخل الإمارات.",
       geo_err: "تعذّر تحديد موقعك. اختر منطقتك من القائمة.", pin_help: "حرّك الخريطة حتى يشير الدبوس إلى مبناك.", pin_set: "تم تحديد النقطة. سيصل المندوب إليها بالضبط.",
-      near: "أقرب منطقة", street: "الشارع والمبنى", street_ph: "مثال: شارع العروبة، برج المجاز", flat: "الشقة / الفيلا", flat_ph: "مثال: شقة ١٢٠٤",
+      near: "أقرب منطقة", street: "الشارع والمبنى", street_ph: "مثال: شارع العروبة، برج المجاز", flat: "الشقة أو الطابق أو الفيلا", flat_ph: "مثال: شقة ١٢٠٤، الطابق ١٢",
       landmark: "معلم قريب", landmark_ph: "اختياري: بجانب لولو، المدخل الخلفي", makani: "رقم مكاني", makani_ph: "اختياري، ١٠ أرقام",
       contact_h: "التواصل", name: "الاسم", phone: "رقم الجوال الإماراتي", phone_help: "بصيغة 05X XXX XXXX. يؤكد المطعم الطلب عبر واتساب.",
       notes: "ملاحظة للمطبخ", notes_ph: "اختياري: حار أقل، بدون بصل…",
       send: "أرسل الطلب عبر واتساب", fee: "يؤكد المطعم رسوم التوصيل ووقته عبر واتساب.",
       outside_zone: "نوصّل عادةً في الشارقة ودبي وعجمان. لهذه الإمارة سيؤكد المطعم إمكانية التوصيل.",
-      e_area: "اختر منطقتك من القائمة أو استخدم موقعك.", e_street: "أضف الشارع والمبنى.", e_flat: "أضف رقم الشقة أو الفيلا.",
+      e_area: "اختر عنوانك من القائمة أو استخدم موقعك.", e_street: "أضف الشارع والمبنى.", e_flat: "أضف رقم الشقة أو الفيلا.",
       e_name: "أضف اسمك.", e_phone: "أدخل رقم جوال إماراتي، مثل 050 123 4567.", e_makani: "رقم مكاني مكوّن من ١٠ أرقام.", e_cart: "أضف طبقاً واحداً على الأقل.",
       no_match: "لم نجد المنطقة. تحقق من الكتابة أو اختر الإمارة أولاً.",
       msg_title: "طلب جديد — مطعم سمرقند", msg_total: "الإجمالي", msg_delivery: "التوصيل إلى", msg_pickup: "استلام من المطعم",
@@ -135,15 +135,15 @@
       '<p class="co-err js-err-cart" hidden></p>' +
       '<div class="seg" role="radiogroup"><label><input type="radio" name="mode" value="delivery" checked><span class="js-l" data-l="delivery"></span></label><label><input type="radio" name="mode" value="pickup"><span class="js-l" data-l="pickup"></span></label></div>' +
       '<fieldset class="co-block js-delivery"><legend class="co-legend js-l" data-l="addr_h"></legend>' +
-        '<div class="f"><label for="co-emirate" class="js-l" data-l="emirate"></label><select id="co-emirate" name="emirate"></select></div>' +
+        '<div class="f" hidden><label for="co-emirate" class="js-l" data-l="emirate"></label><select id="co-emirate" name="emirate"></select></div>' +
         '<div class="f f-area"><label for="co-area" class="js-l" data-l="area"></label>' +
           '<div class="combo"><input id="co-area" name="area" type="text" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="co-area-list" aria-describedby="co-area-help">' +
           '<ul id="co-area-list" class="combo-list" role="listbox" hidden></ul></div>' +
-          '<p id="co-area-help" class="help js-l" data-l="area_help"></p>' +
+          '<p id="co-area-help" class="help js-l" data-l="area_help"></p><p class="help js-emirate-note" hidden></p>' +
           '<button type="button" class="locate js-locate"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/><circle cx="12" cy="12" r="7"/></svg><span class="js-locate-text"></span></button>' +
           '<p class="co-err js-err-area" hidden></p><p class="co-warn js-zone" hidden></p></div>' +
         '<div class="mapbox js-mapbox" hidden><div id="co-map" class="map"></div><span class="map-pin" aria-hidden="true"><svg viewBox="0 0 24 32"><path d="M12 31s10-11.2 10-19A10 10 0 0 0 2 12c0 7.8 10 19 10 19Z"/><circle cx="12" cy="12" r="4"/></svg></span><p class="help js-pin-text"></p></div>' +
-        '<div class="f"><label for="co-street" class="js-l" data-l="street"></label><input id="co-street" name="street" type="text" autocomplete="address-line1"><p class="co-err js-err-street" hidden></p></div>' +
+        '<div class="f js-street-f"><label for="co-street" class="js-l" data-l="street"></label><input id="co-street" name="street" type="text" autocomplete="address-line1"><p class="co-err js-err-street" hidden></p></div>' +
         '<div class="f2"><div class="f"><label for="co-flat" class="js-l" data-l="flat"></label><input id="co-flat" name="flat" type="text" autocomplete="address-line2"><p class="co-err js-err-flat" hidden></p></div>' +
         '<div class="f js-makani-f" hidden><label for="co-makani" class="js-l" data-l="makani"></label><input id="co-makani" name="makani" type="text" inputmode="numeric" maxlength="12"><p class="co-err js-err-makani" hidden></p></div></div>' +
         '<div class="f"><label for="co-landmark" class="js-l" data-l="landmark"></label><input id="co-landmark" name="landmark" type="text"></div>' +
@@ -205,8 +205,12 @@
   }
   $$('input[name="mode"]', dlg).forEach(function(r){ r.addEventListener("change", function(){ setMode(r.value); }); });
 
+  function streetNeeded(){ return !(GOOGLE_MAPS_KEY && !G.failed); }
+  function syncStreet(){ var f = $(".js-street-f"); if (f) f.hidden = !streetNeeded(); }
   function syncEmirate(){
     var em = emirSel.value;
+    var note = $(".js-emirate-note"), known = chosen !== null || googleChoice || geo;
+    if (note){ note.hidden = !known; note.textContent = known ? l("emirate_is") + ": " + emirName(em) : ""; }
     $(".js-makani-f").hidden = em !== "DXB";
     var warn = $(".js-zone"); warn.hidden = UAE_DELIVERY_ZONE.indexOf(em) > -1; warn.textContent = l("outside_zone");
   }
@@ -283,7 +287,7 @@
     if (G.p) return G.p;
     G.p = new Promise(function(res, rej){
       window.__smMaps = function(){ res(); };
-      window.gm_authFailure = function(){ G.failed = true; G.ready = false; var b = $(".js-mapbox"); if (b) b.hidden = true; };
+      window.gm_authFailure = function(){ G.failed = true; G.ready = false; var b = $(".js-mapbox"); if (b) b.hidden = true; syncStreet(); };
       var s = document.createElement("script");
       s.src = "https://maps.googleapis.com/maps/api/js?key=" + encodeURIComponent(GOOGLE_MAPS_KEY) + "&v=weekly&loading=async&language=" + SM.lang() + "&region=AE&callback=__smMaps";
       s.async = true; s.onerror = function(){ rej(new Error("load")); };
@@ -294,7 +298,7 @@
     }).then(function(libs){
       G.places = libs[0]; G.maps = libs[1]; G.geocoder = new libs[2].Geocoder(); G.ready = true;
     });
-    G.p.catch(function(){ G.failed = true; });
+    G.p.catch(function(){ G.failed = true; syncStreet(); });
     return G.p;
   }
   function googleSuggest(text){
@@ -418,7 +422,7 @@
     var ec = $(".js-err-cart"); ec.hidden = !!count(); ec.textContent = l("e_cart"); if (!count()) ok = false;
     if (mode === "delivery"){
       if (chosen === null && !googleChoice && !geo) fail("area", l("e_area"));
-      if (!val("street")) fail("street", l("e_street"));
+      if (streetNeeded() && !val("street")) fail("street", l("e_street"));
       if (!val("flat")) fail("flat", l("e_flat"));
       if (emirSel.value === "DXB" && val("makani") && !/^\d{10}$/.test(val("makani").replace(/\s/g, ""))) fail("makani", l("e_makani"));
     }
@@ -433,12 +437,12 @@
     lines.push("", l("msg_total") + ": " + SM.priceText(total()), "");
     var mode = $('input[name="mode"]:checked', dlg).value;
     if (mode === "delivery"){
-      var areaTxt = googleChoice ? googleChoice.main + ", " + googleChoice.sub : chosen !== null ? areaName(chosen) : "";
-      var parts = [emirName(emirSel.value), areaTxt, val("street"), val("flat")].filter(Boolean);
+      var parts = googleChoice && googleChoice.addr ? [googleChoice.addr, val("flat")]
+        : [emirName(emirSel.value), googleChoice ? googleChoice.main + ", " + googleChoice.sub : chosen !== null ? areaName(chosen) : "", streetNeeded() ? val("street") : "", val("flat")];
+      parts = parts.filter(Boolean);
       lines.push(l("msg_delivery") + ": " + parts.join(", "));
       if (emirSel.value === "DXB" && val("makani")) lines.push("Makani: " + val("makani").replace(/\s/g, ""));
       if (val("landmark")) lines.push(l("msg_land") + ": " + val("landmark"));
-      if (googleChoice && googleChoice.addr) lines.push("Google: " + googleChoice.addr);
       if (geo) lines.push(l("msg_loc") + ": https://maps.google.com/?q=" + geo.lat + "," + geo.lng);
     } else lines.push(l("msg_pickup"));
     lines.push(l("msg_name") + ": " + val("name"), l("msg_phone") + ": " + normPhone(val("phone")));
@@ -472,5 +476,5 @@
 
   SM.onMenu = function(){ pruneCart(); syncBars(); };
   SM.onLang = function(){ fillStatic(); syncBars(); syncEmirate(); if (SM.current && $("#sheet").open) syncAdd(); };
-  fillStatic(); syncEmirate(); syncBars();
+  fillStatic(); syncEmirate(); syncStreet(); syncBars();
 })();
