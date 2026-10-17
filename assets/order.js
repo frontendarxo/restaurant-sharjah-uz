@@ -2,7 +2,7 @@
    Optional: set GOOGLE_MAPS_KEY to a Maps JavaScript API key (Places enabled) to add Google address
    suggestions restricted to the UAE. Without a key the built-in list of UAE areas is used. */
 (function(){
-  var GOOGLE_MAPS_KEY = "";
+  var GOOGLE_MAPS_KEY = "AIzaSyDYjcfvJcQbigHz-B3_AeG91G7J6VWH74E";
   var SM = window.SM;
   var UAE_BOUNDS = { s: 22.5, n: 26.2, w: 51.4, e: 56.5 };
   var STORE_CART = "sm-cart", STORE_ADDR = "sm-addr";
