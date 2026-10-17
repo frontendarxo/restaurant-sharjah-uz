@@ -19,7 +19,14 @@
   }
   function imgSrc(x){ return x || ""; }
 
-  if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.supabase){ $("#setup").hidden = false; return; }
+  if (!cfg.supabaseUrl || !cfg.supabaseAnonKey || !window.supabase){
+    var why = !window.SM_CONFIG ? "Файл /assets/config.js не загрузился: на хостинге не сработала функция config (проверьте netlify.toml и папку netlify/functions в репозитории)."
+      : !cfg.supabaseUrl ? "Переменная SUPABASE_URL пустая: её нет в настройках хостинга или после её добавления не было нового деплоя."
+      : !cfg.supabaseAnonKey ? "Переменная SUPABASE_ANON_KEY пустая: её нет в настройках хостинга или после её добавления не было нового деплоя."
+      : "Не загрузилась библиотека Supabase с cdn.jsdelivr.net. Проверьте интернет или блокировщик рекламы.";
+    $("#setup-why").textContent = why;
+    $("#setup").hidden = false; return;
+  }
   var sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, { auth: { persistSession: true, autoRefreshToken: true } });
 
   var state = { role: null, cats: [], dishes: [], filter: "all", stop: false, q: "" };
